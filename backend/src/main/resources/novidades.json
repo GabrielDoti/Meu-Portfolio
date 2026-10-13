@@ -1,0 +1,14 @@
+[
+  {
+    "titulo": "Cube Runner no ar",
+    "tag": "Jogo",
+    "data": "2026-10-11",
+    "texto": "Agora o portfólio tem um jogo de pulo estilo auto-runner. Tenta bater o recorde!"
+  },
+  {
+    "titulo": "Portfólio Switch OS",
+    "tag": "Novo",
+    "data": "2026-10-11",
+    "texto": "Primeira versão do portfólio com visual inspirado no Nintendo Switch, feita com React, Vite e Spring Boot."
+  }
+]

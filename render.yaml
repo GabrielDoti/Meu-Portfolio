@@ -1,0 +1,64 @@
+# Blueprint do Render: cria o banco, a API (Docker) e o site (estático) de uma vez.
+# Render → New → Blueprint → escolha este repositório.
+#
+# Depois do primeiro deploy (veja o README, seção "Deploy"):
+#   1. copie a URL da API e coloque em VITE_API_URL do serviço portfolio-web (e faça redeploy do site)
+#   2. copie a URL do site e coloque em CORS_ORIGINS do serviço portfolio-api
+databases:
+  - name: portfolio-db
+    plan: free
+    databaseName: portfolio
+    user: portfolio
+
+services:
+  # ---------- Back-end: Spring Boot ----------
+  - type: web
+    name: portfolio-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /api/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: CORS_ORIGINS
+        sync: false # URL do site (ex.: https://portfolio-web.onrender.com), sem barra no final
+      - key: ADMIN_TOKEN
+        generateValue: true # token pra ler as mensagens em /api/admin/mensagens
+      - key: RESEND_API_KEY
+        sync: false # chave da API do Resend (envio de e-mail do formulário)
+      - key: CONTACT_TO
+        sync: false # e-mail que vai receber as mensagens
+      - key: DB_HOST
+        fromDatabase:
+          name: portfolio-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: portfolio-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: portfolio-db
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: portfolio-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: portfolio-db
+          property: password
+
+  # ---------- Front-end: React + Vite (site estático) ----------
+  - type: web
+    name: portfolio-web
+    runtime: static
+    buildCommand: cd frontend && npm ci && npm run build
+    staticPublishPath: ./frontend/dist
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: VITE_API_URL
+        sync: false # URL da API (ex.: https://portfolio-api.onrender.com), sem barra no final
