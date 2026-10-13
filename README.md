@@ -271,11 +271,6 @@ Tudo roda no **Render** (plano gratuito), criado de uma vez pelo `render.yaml` d
 ```
 
 ## 🎥 Protótipos e Demonstração
-
-### 🎨 Wireframes (Figma)
-
-> ⚠️ _Cole aqui as imagens dos wireframes de média fidelidade e o link do arquivo no Figma (entrega da Sprint 01)._
-
 ### 🌐 Aplicação Web
 
 | Tela inicial | Sobre mim |
